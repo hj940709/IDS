@@ -54,7 +54,8 @@ pred = clf.predict(np.array(test_df))
 result = pd.DataFrame()
 result["PassengerId"] = test["PassengerId"]
 result["Survived"] = pred
-result.to_csv("./submission.csv")
+
+result.to_csv("./submission.csv",index=False)
 #2
 #read file
 json_str = open('./Automotive_5.json', 'rb').readlines()
