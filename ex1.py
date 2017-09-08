@@ -6,12 +6,13 @@ from nltk.stem.porter import *
 from nltk.stem.snowball import SnowballStemmer
 import sqlite3
 
-cd e:/document/ds/data sets
+#cd e:/document/ids/data sets
 #1
-raw = pd.read_csv("./ex1-1.csv")
-raw.columns
+train = pd.read_csv("./ex1-1.csv")
+train.columns
 
-df = raw.drop("Name",axis=1).drop("Ticket",axis=1)
+df = train.drop("Name",axis=1).drop("Ticket",axis=1).drop("PassengerId",axis=1)
+
 df.columns
 
 def func(data):
@@ -42,6 +43,18 @@ df["Deck"] = df["Deck"].map(lambda x:x==-1 and deckmdoe or x)
 df.to_csv("./processed.csv")
 df.to_json("./processed.json",orient="records",lines=True)
 
+from sklearn import svm
+y=np.array(df["Survived"])
+x=np.array(df.drop("Survived",axis=1))
+clf = svm.SVC()
+clf.fit(x, y) 
+test = pd.read_csv("./ex1-1te.csv")
+test_df = test.drop("Name",axis=1).drop("Ticket",axis=1).drop("PassengerId",axis=1)
+pred = clf.predict(np.array(test_df))
+result = pd.DataFrame()
+result["PassengerId"] = test["PassengerId"]
+result["Survived"] = pred
+result.to_csv("./submission.csv")
 #2
 #read file
 json_str = open('./Automotive_5.json', 'rb').readlines()
