@@ -43,19 +43,7 @@ df["Deck"] = df["Deck"].map(lambda x:x==-1 and deckmdoe or x)
 df.to_csv("./processed.csv")
 df.to_json("./processed.json",orient="records",lines=True)
 
-from sklearn import svm
-y=np.array(df["Survived"])
-x=np.array(df.drop("Survived",axis=1))
-clf = svm.SVC()
-clf.fit(x, y) 
-test = pd.read_csv("./ex1-1te.csv")
-test_df = test.drop("Name",axis=1).drop("Ticket",axis=1).drop("PassengerId",axis=1)
-pred = clf.predict(np.array(test_df))
-result = pd.DataFrame()
-result["PassengerId"] = test["PassengerId"]
-result["Survived"] = pred
 
-result.to_csv("./submission.csv",index=False)
 #2
 #read file
 json_str = open('./Automotive_5.json', 'rb').readlines()
