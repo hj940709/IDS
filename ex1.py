@@ -11,7 +11,7 @@ import sqlite3
 train = pd.read_csv("./ex1-1.csv")
 train.columns
 
-df = train.drop("Name",axis=1).drop("Ticket",axis=1).drop("PassengerId",axis=1)
+df = train.drop("Name",axis=1).drop("Ticket",axis=1)
 
 df.columns
 
@@ -32,7 +32,7 @@ df["Embarked"] = df["Embarked"].astype('category').cat.codes
 df["Survived"] = df["Survived"].fillna(df["Survived"].mode())
 df["Pclass"] = df["Pclass"].fillna(df["Pclass"].mode())
 df["Sex"] = df["Sex"].fillna(df["Sex"].mode())
-df["Age"] = df["Age"].fillna(int(np.ceil(df["Age"].mean())))
+df["Age"] = df["Age"].fillna(int(np.ceil(df["Age"].mean()))).map(lambda x:int(np.ceil(x)))
 df["SibSp"] = df["SibSp"].fillna(df["SibSp"].mode())
 df["Parch"] = df["Parch"].fillna(df["Parch"].mode())
 df["Fare"] = df["Fare"].fillna(df["Fare"].mean())
@@ -40,7 +40,7 @@ df["Embarked"] = df["Embarked"].fillna(df["Embarked"].mode())
 deckmdoe = int(df["Deck"].map(lambda x:x==-1 and np.nan or x).mode())
 df["Deck"] = df["Deck"].map(lambda x:x==-1 and deckmdoe or x)
 
-df.to_csv("./processed.csv")
+df.to_csv("./processed.csv",index=False)
 df.to_json("./processed.json",orient="records",lines=True)
 
 
