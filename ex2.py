@@ -22,8 +22,8 @@ survived = processed_noid[processed_noid["Survived"]==1]
 survived_jane = np.array([1,int(survived["Pclass"].mode()),
                         int(survived["Sex"].mode()),
                         int(survived["Age"].mean()),
-                        int(survived["SibSp"].mode()),
-                        int(survived["Parch"].mode()),
+                        int(survived["SibSp"].mean()),
+                        int(survived["Parch"].mean()),
                         survived["Fare"].mean(),
                         int(survived["Embarked"].mode()),
                         int(survived["Deck"].mode())])
@@ -32,8 +32,8 @@ dead = processed_noid[processed_noid["Survived"]==0]
 dead_joe = np.array([0,int(dead["Pclass"].mode()),
                         int(dead["Sex"].mode()),
                         int(dead["Age"].mean()),
-                        int(dead["SibSp"].mode()),
-                        int(dead["Parch"].mode()),
+                        int(dead["SibSp"].mean()),
+                        int(dead["Parch"].mean()),
                         dead["Fare"].mean(),
                         int(dead["Embarked"].mode()),
                         int(dead["Deck"].mode())]);
@@ -45,6 +45,10 @@ survived_jane
 np.array(dead)[dead_similarity.argmin()]
 dead_joe
 
+sns.countplot(survived["Sex"])
+sns.countplot(dead["Sex"])
 
 sns.distplot(survived["Age"],hist=False)
 sns.distplot(dead["Age"],hist=False)
+
+
