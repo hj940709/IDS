@@ -46,15 +46,16 @@ df.to_json("./processed.json",orient="records",lines=True)
 
 #2
 #read file
-json_str = open('./Automotive_5.json', 'rb').readlines()
+#json_str = open('./Automotive_5.json', 'rb').readlines()
+df = pd.read_json('./Automotive_5.json',lines=True)
 stop = open("./stop-word-list.csv", 'rb').read()
 #decode
-json_str = [obj.decode("utf-8") for obj in json_str]
+#json_str = [obj.decode("utf-8") for obj in json_str]
 stop = stop.decode("utf-8")
 #formalize
-json_str = "["+",".join(json_str)+"]"
+#json_str = "["+",".join(json_str)+"]"
 stop = np.array(stop.split(", "))
-df = pd.read_json(json_str)
+#df = pd.read_json(json_str)
 
 df["reviewText"] = df["reviewText"].map(lambda x:x.lower()).map(lambda x:re.sub(r'[^\w\s]','',x))
 
@@ -64,8 +65,8 @@ df["reviewText"] = df["reviewText"].map(lambda x: [word.strip() for word in x.sp
 stemmer = SnowballStemmer("english")
 df["reviewText"] = df["reviewText"].map(lambda x: [stemmer.stem(word) for word in x])
 
-df[df["overall"]>=4].to_csv("pos.txt")
-df[df["overall"]<=2].to_csv("neg.txt")
+df[df["overall"]>=4].to_csv("pos.csv")
+df[df["overall"]<=2].to_csv("neg.csv")
 
 #3
 database = "ex1-3.sqlite"

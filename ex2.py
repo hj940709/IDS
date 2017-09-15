@@ -1,8 +1,9 @@
-#cd e:/document/ids/data sets
+cd e:/document/ids/data sets
 
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D;
 import seaborn as sns
 #1
 processed = pd.read_csv("./processed.csv")
@@ -51,8 +52,23 @@ sns.countplot(dead["Sex"])
 sns.distplot(survived["Age"],hist=False)
 sns.distplot(dead["Age"],hist=False)
 
-with plt.style("default"):
-	plt.plot(np.array(survived["Age"]),np.array(survived["SibSp"]),"bo")
-	plt.show()
+with plt.style.context("default"):
+    plt.plot(np.array(survived["Age"]),np.array(survived["SibSp"]),"bo",alpha=0.3)
+    plt.plot(np.array(dead["Age"]), np.array(dead["SibSp"]),"go", alpha=0.3)
+    plt.show()
+
+with plt.style.context("default"):
+    ax = plt.figure().add_subplot(111, projection='3d')
+    ax.scatter(xs =np.array(survived["Age"]),
+                   ys=np.array(survived["SibSp"]),zs = np.array(survived["Fare"]),c="b")
+    ax.scatter(xs=np.array(dead["Age"]),
+               ys=np.array(dead["SibSp"]), zs=np.array(dead["Fare"]), c="g")
+    ax.set_xlabel("Age")
+    ax.set_ylabel("Sibsp")
+    ax.set_zlabel("Fare")
+    plt.show()
 
 
+#2
+raw_pos = pd.read_csv("./pos.csv")
+raw_neg = pd.read_csv("./neg.csv")
