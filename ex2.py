@@ -83,8 +83,6 @@ neg_review = raw_neg.replace("[","").replace("'","").replace("]","")\
 pos = np.array([word.strip() for word in pos_review])
 neg = np.array([word.strip() for word in neg_review])
 
-
-
 def mode(array):
     (_, idx, counts) = np.unique(array, return_index=True, return_counts=True)
     index = idx[np.argmax(counts)]
@@ -101,4 +99,6 @@ tfidf = np.fromiter(([getTfIdf(word) for word in wordlist]))
 
 wordlist[tfidf[0].argmax()]
 wordlist[tfidf[1].argmax()]
+
+
 
