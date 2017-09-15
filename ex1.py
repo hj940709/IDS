@@ -65,8 +65,9 @@ df["reviewText"] = df["reviewText"].map(lambda x: [word.strip() for word in x.sp
 stemmer = SnowballStemmer("english")
 df["reviewText"] = df["reviewText"].map(lambda x: [stemmer.stem(word) for word in x])
 
-df[df["overall"]>=4].to_csv("pos.csv")
-df[df["overall"]<=2].to_csv("neg.csv")
+df[df["overall"]>=4]["reviewText"].to_csv("pos.txt",index=False)
+df[df["overall"]<=2]["reviewText"].to_csv("neg.txt",index=False)
+
 
 #3
 database = "ex1-3.sqlite"
