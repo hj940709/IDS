@@ -51,4 +51,8 @@ sns.countplot(dead["Sex"])
 sns.distplot(survived["Age"],hist=False)
 sns.distplot(dead["Age"],hist=False)
 
+with plt.style("default"):
+	plt.plot(np.array(survived["Age"]),np.array(survived["SibSp"]),"bo")
+	plt.show()
+
 
