@@ -75,23 +75,30 @@ with plt.style.context("default"):
 raw_pos = open("./pos.txt", 'rb').read().decode("utf-8")
 raw_neg = open("./neg.txt", 'rb').read().decode("utf-8")
 
-pos_review = raw_pos.replace("[","").replace("'","").replace("]","").replace("\"","").replace("\r\n","")
-neg_review = raw_neg.replace("[","").replace("'","").replace("]","").replace("\"","").replace("\r\n","")
+pos_review = raw_pos.replace("[","").replace("'","")\
+    .replace("]","").replace("\"","").replace("\r\n",",").split(",")
+neg_review = raw_neg.replace("[","").replace("'","").replace("]","")\
+    .replace("\"","").replace("\r\n",",").split(",")
 
-pos_review = pos_review.split(",")
-neg_review = neg_review.split(",")
-
-stats.mode(pos_review)
-neg_review.mode()
-
-def func(bag):
-    result = {}
-    for word in bag:
-        if word[0] not in result.keys():
-            result[word[0]] = 1
-        else: result[word[0]] +=1
-    return result
+pos = np.array([word.strip() for word in pos_review])
+neg = np.array([word.strip() for word in neg_review])
 
 
 
-raw_pos["reviewText"].map(lambda x:[(word,1) for word in x]).map(func).head(5)
+def mode(array):
+    (_, idx, counts) = np.unique(array, return_index=True, return_counts=True)
+    index = idx[np.argmax(counts)]
+    return array[index]
+
+mode(pos)
+mode(neg)
+
+wordlist = np.unique(np.append(pos,neg))
+
+getTfIdf = lambda x: np.array([(x==pos).sum()/len(pos),(x==neg).sum()/len(neg)])/(np.log2(3/(1+(x==pos).any()+(x==neg).any()))+1)
+
+tfidf = np.fromiter(([getTfIdf(word) for word in wordlist]))
+
+wordlist[tfidf[0].argmax()]
+wordlist[tfidf[1].argmax()]
+
