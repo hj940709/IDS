@@ -72,33 +72,23 @@ with plt.style.context("default"):
 
 
 #2
-raw_pos = open("./pos.txt", 'rb').read().decode("utf-8")
-raw_neg = open("./neg.txt", 'rb').read().decode("utf-8")
+pos_raw = open("./pos.txt", 'rb').readlines()
+neg_raw = open("./neg.txt", 'rb').readlines()
 
-pos_review = raw_pos.replace("[","").replace("'","")\
-    .replace("]","").replace("\"","").replace("\r\n",",").split(",")
-neg_review = raw_neg.replace("[","").replace("'","").replace("]","")\
-    .replace("\"","").replace("\r\n",",").split(",")
+pos_line = np.array([line.decode("utf-8").strip().split(",") for line in pos_raw])
+neg_line = np.array([line.decode("utf-8").strip().split(",") for line in neg_raw])
 
-pos = np.array([word.strip() for word in pos_review])
-neg = np.array([word.strip() for word in neg_review])
+pos_wordlist = np.unique(np.concatenate(pos_line),return_counts=True)
+neg_wordlist = np.unique(np.concatenate(neg_line),return_counts=True)
 
-def mode(array):
-    (_, idx, counts) = np.unique(array, return_index=True, return_counts=True)
-    index = idx[np.argmax(counts)]
-    return array[index]
+pos_wordlist[0][pos_wordlist[1].argmax()]#use
+neg_wordlist[0][neg_wordlist[1].argmax()]#one
 
-mode(pos)
-mode(neg)
+wordlist = np.concatenate(np.concatenate(pos_line),np.concatenate(neg_line))
 
-wordlist = np.unique(np.append(pos,neg))
 
 getTfIdf = lambda x: np.array([(x==pos).sum()/len(pos),(x==neg).sum()/len(neg)])/(np.log2(3/(1+(x==pos).any()+(x==neg).any()))+1)
 
-tfidf = np.fromiter(([getTfIdf(word) for word in wordlist]))
-
-wordlist[tfidf[0].argmax()]
-wordlist[tfidf[1].argmax()]
 
 
 

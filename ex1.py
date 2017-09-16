@@ -6,7 +6,7 @@ from nltk.stem.porter import *
 from nltk.stem.snowball import SnowballStemmer
 import sqlite3
 
-#cd e:/document/ids/data sets
+cd e:/document/ids/data sets
 #1
 train = pd.read_csv("./ex1-1.csv")
 train.columns
@@ -65,9 +65,15 @@ df["reviewText"] = df["reviewText"].map(lambda x: [word.strip() for word in x.sp
 stemmer = SnowballStemmer("english")
 df["reviewText"] = df["reviewText"].map(lambda x: [stemmer.stem(word) for word in x])
 
-df[df["overall"]>=4]["reviewText"].to_csv("pos.txt",index=False)
-df[df["overall"]<=2]["reviewText"].to_csv("neg.txt",index=False)
+df["reviewText"] = df["reviewText"].map(lambda x: ",".join(x))
 
+#df[df["overall"]>=4]["reviewText"].to_csv("pos.txt",index=False)
+#df[df["overall"]<=2]["reviewText"].to_csv("neg.txt",index=False)
+
+with open("pos.txt", 'w') as f:
+    f.write("\n".join(np.array(df[df["overall"]>=4]["reviewText"])))
+with open("neg.txt", 'w') as f:
+    f.write("\n".join(np.array(df[df["overall"]<=2]["reviewText"])))
 
 #3
 database = "ex1-3.sqlite"
