@@ -106,3 +106,12 @@ print(wordlist[np.argmax(tfidf[:,1])])
 #Omit
 
 #4
+import geopandas as gpd
+
+world = gpd.read_file("./world_m.shp")
+cities = gpd.read_file("./cities.shp")
+
+with plt.style.context("default"):
+    cities = cities.to_crs(world.crs)
+    base = world.plot()
+    cities.plot(ax=base,marker='o', color='red', markersize=5)
