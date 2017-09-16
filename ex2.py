@@ -102,7 +102,7 @@ tfidf = np.column_stack((pos_tf*idf,neg_tf*idf))
 print(wordlist[np.argmax(tfidf[:,0])])
 print(wordlist[np.argmax(tfidf[:,1])])
 
+#3
+#Omit
 
-
-
-
+#4
