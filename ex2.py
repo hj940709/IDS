@@ -70,6 +70,7 @@ with plt.style.context("default"):
 
 
 #2
+#text file format has been modified, please check the code from ex1 and re-generate both related file
 pos_raw = open("./pos.txt", 'rb').readlines()
 neg_raw = open("./neg.txt", 'rb').readlines()
 
