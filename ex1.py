@@ -6,7 +6,7 @@ from nltk.stem.porter import *
 from nltk.stem.snowball import SnowballStemmer
 import sqlite3
 
-cd e:/document/ids/data sets
+#cd e:/document/ids/data sets
 #1
 train = pd.read_csv("./ex1-1.csv")
 train.columns
@@ -83,7 +83,7 @@ query = "select * from player "+\
 	"(select distinct player_id from hall_of_fame where inducted='Y');"
 df = pd.read_sql(query,conn)
 
-print(rows)
+#print(rows)
 conn.close()
 
 
