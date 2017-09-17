@@ -1,4 +1,4 @@
-#cd e:/document/ids/data sets
+#cd ./data sets
 
 import pandas as pd
 import numpy as np
@@ -77,13 +77,16 @@ neg_raw = open("./neg.txt", 'rb').readlines()
 pos_line = np.array([line.decode("utf-8").strip().split(",") for line in pos_raw])
 neg_line = np.array([line.decode("utf-8").strip().split(",") for line in neg_raw])
 
-pos_wordlist = np.unique(np.concatenate(pos_line),return_counts=True)
-neg_wordlist = np.unique(np.concatenate(neg_line),return_counts=True)
+pos_wordlist = np.unique(np.delete(np.concatenate(pos_line),np.where(np.concatenate(pos_line)=="")),
+                         return_counts=True)
+neg_wordlist = np.unique(np.delete(np.concatenate(neg_line),np.where(np.concatenate(neg_line)=="")),
+                         return_counts=True)
 
 print(pos_wordlist[0][pos_wordlist[1].argmax()])#use
 print(neg_wordlist[0][neg_wordlist[1].argmax()])#use
 
-wordlist = np.unique(np.concatenate(np.append(pos_line,neg_line)))
+wordlist = np.unique(np.delete(np.concatenate(np.append(pos_line,neg_line)),
+                               np.where(np.concatenate(np.append(pos_line,neg_line))=="")))
 
 pos_tf = np.array([(count/len(pos_line)) for count in pos_wordlist[1]])
 neg_tf = np.array([(count/len(neg_line)) for count in neg_wordlist[1]])
@@ -91,16 +94,31 @@ neg_tf = np.array([(count/len(neg_line)) for count in neg_wordlist[1]])
 pos_tf = np.column_stack((np.matrix(pos_wordlist[0]).T,pos_tf))
 neg_tf = np.column_stack((np.matrix(neg_wordlist[0]).T,neg_tf))
 
-pos_func = lambda word:(word==pos_tf[:,0]).any() and float(pos_tf[np.where((word==pos_tf[:,0]).flatten()),1][0,0]) or 0
-neg_func = lambda word:(word==neg_tf[:,0]).any() and float(neg_tf[np.where((word==neg_tf[:,0]).flatten()),1][0,0]) or 0
+pos_func = lambda word:(word==pos_tf[:,0]).any() and\
+                       float(pos_tf[np.where((word==pos_tf[:,0]).flatten()),1][0,0]) or 0
+neg_func = lambda word:(word==neg_tf[:,0]).any() and\
+                       float(neg_tf[np.where((word==neg_tf[:,0]).flatten()),1][0,0]) or 0
+#without smoothing
+idf_func = lambda word: np.log2(2/np.sum([(word==pos_wordlist[0]).any(),(word==neg_wordlist[0]).any()]))
+#smoothins
+#idf_func = lambda word: np.log2(2/np.sum([(word==pos_wordlist[0]).any(),(word==neg_wordlist[0]).any()])+1)
 pos_tf = np.array([pos_func(word) for word in wordlist])
 neg_tf = np.array([neg_func(word) for word in wordlist])
-idf_func = lambda word: (np.log2((2+1)/(1+(word==pos_wordlist[0]).any()+(word==neg_wordlist[0]).any()))+1)
 idf = np.array([idf_func(word) for word in wordlist])
 tfidf = np.column_stack((pos_tf*idf,neg_tf*idf))
 
-print(wordlist[np.argmax(tfidf[:,0])])
-print(wordlist[np.argmax(tfidf[:,1])])
+with plt.style.context("default"):
+    plt.plot(pos_tf, "go", markersize=5, alpha=0.5)
+    plt.plot(neg_tf, "yo", markersize=5, alpha=0.5)
+    plt.show()
+
+with plt.style.context("default"):
+    plt.plot(tfidf[:, 0], "bo", markersize=5,alpha=0.3)
+    plt.plot(tfidf[:, 1], "ro", markersize=5, alpha=0.3)
+    plt.show()
+
+print(wordlist[np.argmax(tfidf[:,0])])#greasi
+print(wordlist[np.argmax(tfidf[:,1])])#155v
 
 #3
 #Omit

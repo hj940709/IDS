@@ -6,7 +6,7 @@ from nltk.stem.porter import *
 from nltk.stem.snowball import SnowballStemmer
 import sqlite3
 
-#cd e:/document/ids/data sets
+#cd ./data sets
 #1
 train = pd.read_csv("./ex1-1.csv")
 train.columns
