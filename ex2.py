@@ -76,20 +76,19 @@ neg_raw = open("./neg.txt", 'rb').readlines()
 
 pos_line = np.array([line.decode("utf-8").strip().split(",") for line in pos_raw])
 neg_line = np.array([line.decode("utf-8").strip().split(",") for line in neg_raw])
+pos_line = np.array([[word for word in line if word!=""] for line in pos_line ])
+neg_line = np.array([[word for word in line if word!=""] for line in neg_line ])
 
-pos_wordlist = np.unique(np.delete(np.concatenate(pos_line),np.where(np.concatenate(pos_line)=="")),
-                         return_counts=True)
-neg_wordlist = np.unique(np.delete(np.concatenate(neg_line),np.where(np.concatenate(neg_line)=="")),
-                         return_counts=True)
+pos_wordlist = np.unique(np.concatenate(pos_line),return_counts=True)
+neg_wordlist = np.unique(np.concatenate(neg_line),return_counts=True)
 
 print(pos_wordlist[0][pos_wordlist[1].argmax()])#use
 print(neg_wordlist[0][neg_wordlist[1].argmax()])#use
 
-wordlist = np.unique(np.delete(np.concatenate(np.append(pos_line,neg_line)),
-                               np.where(np.concatenate(np.append(pos_line,neg_line))=="")))
+wordlist = np.unique(np.concatenate(np.append(pos_line,neg_line)))
 
-pos_tf = np.array([(count/len(pos_line)) for count in pos_wordlist[1]])
-neg_tf = np.array([(count/len(neg_line)) for count in neg_wordlist[1]])
+pos_tf = pos_wordlist[1]/sum(pos_wordlist[1])
+neg_tf = neg_wordlist[1]/sum(neg_wordlist[1])
 
 pos_tf = np.column_stack((np.matrix(pos_wordlist[0]).T,pos_tf))
 neg_tf = np.column_stack((np.matrix(neg_wordlist[0]).T,neg_tf))
