@@ -30,6 +30,11 @@ lr_clf.fit(trainX,trainY)
 print("Guess Loss:", 1-(y[np.argmax(counts)]==testY).sum()/len(testY))
 print("LR Loss:",1-(lr_clf.predict(testX)==testY).sum()/len(test))
 
+with plt.style.context("default"):
+    plt.imshow(testX[np.where((lr_clf.predict(testX)!=testY))][4].reshape((32,32)))
+    plt.show()
+
+
 #3
 rf_clf = RandomForestClassifier(n_estimators=10,random_state=1)
 rf_clf.fit(trainX,trainY)
