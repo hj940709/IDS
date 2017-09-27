@@ -67,5 +67,5 @@ with plt.style.context("default"):
 print("RF Loss:",1-(clf[np.argmin(loss)].predict(testX)==testY).sum()/len(test))
 
 tpot = TPOTClassifier(generations=5, population_size=50, verbosity=2)
-tpot.fit(trainX, trainY)
+tpot.fit(trainX, trainY) #LogisticRegression(C=10.0, dual=False)
 print("TPOT Loss:",1-(tpot.predict(testX)==testY).sum()/len(test))
