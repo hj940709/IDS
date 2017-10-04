@@ -23,7 +23,7 @@ testX = np.array([misc.imread(path,flatten=True,mode='L').flatten() for path in 
 trainY = train[:,2]
 testY = test[:,2]
 
-lr_clf = LogisticRegression(random_state=1,multi_class="ovr")
+lr_clf = LogisticRegression(random_state=1,multi_class="ovr",C=10.0, dual=True,penalty="l2")
 lr_clf.fit(trainX,trainY)
 
 (y,counts)=np.unique(trainY,return_counts=True)
