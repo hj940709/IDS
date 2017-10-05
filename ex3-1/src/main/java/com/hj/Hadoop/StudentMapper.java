@@ -14,7 +14,7 @@ public class StudentMapper extends Mapper<Text, Text, Text, Text> {
 		String[] line = value.toString().split(",");
 		if(Integer.valueOf(line[2])>1990) {
 			String newkey = line[0];
-			String values = "student"+line[1]+","+line[2];
+			String values = "student,"+line[1]+","+line[2];
 			context.write(new Text(newkey), new Text(values));
 		}
 	}
